@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cybersecurity Dashboard - 6-Month Analysis</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.8.0/umd/Recharts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -196,16 +192,21 @@
             opacity: 0.8;
         }
 
-        .icon.success {
-            color: #00FF94;
+        .charts-section {
+            margin-bottom: 3rem;
         }
 
-        .icon.warning {
-            color: #FFB74D;
-        }
-
-        .icon.danger {
-            color: #FF4081;
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #FF00FF 0%, #00FFFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .charts-grid {
@@ -217,7 +218,6 @@
 
         .chart-container {
             padding: 2rem;
-            margin-bottom: 2rem;
         }
 
         .chart-title {
@@ -233,17 +233,16 @@
             background-clip: text;
         }
 
-        .section-title {
+        .chart-placeholder {
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #FF00FF 0%, #00FFFF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            justify-content: center;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .detailed-analysis {
@@ -305,52 +304,41 @@
             font-weight: 600;
         }
 
+        .status {
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+        }
+
         .status.excellent {
             background: linear-gradient(135deg, #00FF94, #00E676);
             color: #000;
-            font-weight: 600;
-            border-radius: 1rem;
-            font-size: 0.75rem;
         }
 
         .status.good {
             background: linear-gradient(135deg, #00BCD4, #00E5FF);
             color: #000;
-            font-weight: 600;
-            border-radius: 1rem;
-            font-size: 0.75rem;
         }
 
         .status.growing {
             background: linear-gradient(135deg, #3F51B5, #5C6BC0);
             color: white;
-            font-weight: 600;
-            border-radius: 1rem;
-            font-size: 0.75rem;
         }
 
         .status.improving {
             background: linear-gradient(135deg, #9C27B0, #BA68C8);
             color: white;
-            font-weight: 600;
-            border-radius: 1rem;
-            font-size: 0.75rem;
         }
 
         .status.concerning {
             background: linear-gradient(135deg, #FF9800, #FFB74D);
             color: #000;
-            font-weight: 600;
-            border-radius: 1rem;
-            font-size: 0.75rem;
         }
 
         .status.critical {
             background: linear-gradient(135deg, #F44336, #FF4081);
             color: white;
-            font-weight: 600;
-            border-radius: 1rem;
-            font-size: 0.75rem;
         }
 
         .footer {
@@ -382,6 +370,58 @@
             transform: translateY(-1px);
         }
 
+        .key-insights {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .insight-card {
+            padding: 2rem;
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .insight-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF00FF 0%, #00FFFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .insight-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .insight-list li {
+            padding: 0.75rem 0;
+            color: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .insight-list li:before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #00FFFF;
+            font-weight: bold;
+        }
+
+        .insight-list li:last-child {
+            border-bottom: none;
+        }
+
         @media (max-width: 1024px) {
             .charts-grid {
                 grid-template-columns: 1fr;
@@ -396,6 +436,10 @@
             .table-row > div {
                 text-align: left;
                 padding: 0.5rem;
+            }
+
+            .key-insights {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -415,354 +459,230 @@
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <div class="dashboard">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="main-title">CYBERSECURITY DASHBOARD</h1>
+            <p class="subtitle">Advanced Security Analytics & Threat Intelligence</p>
+            <div class="period-badge">January - June 2024 (6-Month Analysis)</div>
+        </div>
 
-    <script type="text/babel">
-        const { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart } = Recharts;
-        
-        // Icons as SVG components
-        const TrendingUp = () => (
-            <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-        );
+        <!-- Key Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card glass-card">
+                <div class="metric-header">
+                    <span class="metric-title">Slack 2FA Adoption</span>
+                    <svg class="icon" style="color: #00FF94;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                </div>
+                <div class="metric-value">100%</div>
+                <div class="metric-change positive">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
+                    </svg>
+                    +40.77% since Jan
+                </div>
+            </div>
 
-        const Shield = () => (
-            <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-        );
+            <div class="metric-card glass-card">
+                <div class="metric-header">
+                    <span class="metric-title">External Shares</span>
+                    <svg class="icon" style="color: #FF4081;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                </div>
+                <div class="metric-value">13,282</div>
+                <div class="metric-change negative">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
+                    </svg>
+                    +229% since Jan
+                </div>
+            </div>
 
-        const Users = () => (
-            <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-        );
+            <div class="metric-card glass-card">
+                <div class="metric-header">
+                    <span class="metric-title">Bitwarden Users</span>
+                    <svg class="icon" style="color: #00FF94;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </div>
+                <div class="metric-value">109</div>
+                <div class="metric-change positive">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
+                    </svg>
+                    +7.92% since Jan
+                </div>
+            </div>
 
-        const AlertTriangle = () => (
-            <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z" />
-            </svg>
-        );
+            <div class="metric-card glass-card">
+                <div class="metric-header">
+                    <span class="metric-title">Security Training</span>
+                    <svg class="icon" style="color: #FFB74D;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <div class="metric-value">6</div>
+                <div class="metric-change negative">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
+                    </svg>
+                    -40% since Feb
+                </div>
+            </div>
+        </div>
 
-        const BarChart3 = () => (
-            <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-        );
-
-        const ArrowUp = () => (
-            <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
-            </svg>
-        );
-
-        const ArrowDown = () => (
-            <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" />
-            </svg>
-        );
-
-        function CybersecurityDashboard() {
-            const CONFIG = {
-                reportPeriod: "January - June 2024 (6-Month Analysis)",
-                metrics: {
-                    slack2FA: { value: "100%", change: "+40.77%", trend: "up", since: "Jan" },
-                    externalShares: { value: "13,282", change: "+229%", trend: "down", since: "Jan" },
-                    bitwardenUsers: { value: "109", change: "+7.92%", trend: "up", since: "Jan" },
-                    securityTraining: { value: "6", change: "-40%", trend: "down", since: "Feb" }
-                },
-                riskData: [
-                    { month: "Jan", risk: 70.98, incidents: 0, externalShares: 4039 },
-                    { month: "Feb", risk: 73.34, incidents: 0, externalShares: 4693 },
-                    { month: "Jun", risk: 153.11, incidents: 0, externalShares: 13282 }
-                ],
-                adoptionTrends: [
-                    { month: "Jan", slack2FA: 59.23, email2FA: 98.29, bitwarden: 77.69, training: 0.77 },
-                    { month: "Feb", slack2FA: 97.83, email2FA: 97.67, bitwarden: 76.09, training: 10.87 },
-                    { month: "Jun", slack2FA: 100.00, email2FA: 99.31, bitwarden: 81.34, training: 4.48 }
-                ],
-                detailedMetrics: {
-                    january: {
-                        totalUsers: 130,
-                        activeUsers: 130,
-                        emailAccounts: 293,
-                        bitwardenUsers: 101,
-                        slack2FA: 77,
-                        email2FA: 288,
-                        unauthorizedExceptions: 2,
-                        securityTraining: 1,
-                        anyoneShares: 5690,
-                        externalShares: 4039
-                    },
-                    february: {
-                        totalUsers: 138,
-                        activeUsers: 138,
-                        emailAccounts: 300,
-                        bitwardenUsers: 105,
-                        slack2FA: 135,
-                        email2FA: 293,
-                        unauthorizedExceptions: 4,
-                        securityTraining: 15,
-                        anyoneShares: 6399,
-                        externalShares: 4693
-                    },
-                    june: {
-                        totalUsers: 156,
-                        activeUsers: 134,
-                        emailAccounts: 291,
-                        bitwardenUsers: 109,
-                        slack2FA: 134,
-                        email2FA: 289,
-                        unauthorizedExceptions: 1,
-                        securityTraining: 6,
-                        anyoneShares: 8675,
-                        externalShares: 13282
-                    }
-                }
-            };
-
-            return (
-                <div className="dashboard">
-                    {/* Header */}
-                    <div className="header">
-                        <h1 className="main-title">CYBERSECURITY DASHBOARD</h1>
-                        <p className="subtitle">Advanced Security Analytics & Threat Intelligence</p>
-                        <div className="period-badge">{CONFIG.reportPeriod}</div>
-                    </div>
-
-                    {/* Key Metrics */}
-                    <div className="metrics-grid">
-                        <div className="metric-card glass-card">
-                            <div className="metric-header">
-                                <span className="metric-title">Slack 2FA Adoption</span>
-                                <Shield className="icon success" />
-                            </div>
-                            <div className="metric-value">{CONFIG.metrics.slack2FA.value}</div>
-                            <div className={`metric-change ${CONFIG.metrics.slack2FA.trend === 'up' ? 'positive' : 'negative'}`}>
-                                {CONFIG.metrics.slack2FA.trend === 'up' ? <ArrowUp /> : <ArrowDown />}
-                                {CONFIG.metrics.slack2FA.change} since {CONFIG.metrics.slack2FA.since}
-                            </div>
-                        </div>
-
-                        <div className="metric-card glass-card">
-                            <div className="metric-header">
-                                <span className="metric-title">External Shares</span>
-                                <AlertTriangle className="icon danger" />
-                            </div>
-                            <div className="metric-value">{CONFIG.metrics.externalShares.value}</div>
-                            <div className={`metric-change ${CONFIG.metrics.externalShares.trend === 'up' ? 'positive' : 'negative'}`}>
-                                {CONFIG.metrics.externalShares.trend === 'up' ? <ArrowUp /> : <ArrowDown />}
-                                {CONFIG.metrics.externalShares.change} since {CONFIG.metrics.externalShares.since}
-                            </div>
-                        </div>
-
-                        <div className="metric-card glass-card">
-                            <div className="metric-header">
-                                <span className="metric-title">Bitwarden Users</span>
-                                <Users className="icon success" />
-                            </div>
-                            <div className="metric-value">{CONFIG.metrics.bitwardenUsers.value}</div>
-                            <div className={`metric-change ${CONFIG.metrics.bitwardenUsers.trend === 'up' ? 'positive' : 'negative'}`}>
-                                {CONFIG.metrics.bitwardenUsers.trend === 'up' ? <ArrowUp /> : <ArrowDown />}
-                                {CONFIG.metrics.bitwardenUsers.change} since {CONFIG.metrics.bitwardenUsers.since}
-                            </div>
-                        </div>
-
-                        <div className="metric-card glass-card">
-                            <div className="metric-header">
-                                <span className="metric-title">Security Training</span>
-                                <TrendingUp className="icon warning" />
-                            </div>
-                            <div className="metric-value">{CONFIG.metrics.securityTraining.value}</div>
-                            <div className={`metric-change ${CONFIG.metrics.securityTraining.trend === 'up' ? 'positive' : 'negative'}`}>
-                                {CONFIG.metrics.securityTraining.trend === 'up' ? <ArrowUp /> : <ArrowDown />}
-                                {CONFIG.metrics.securityTraining.change} since {CONFIG.metrics.securityTraining.since}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Charts */}
-                    <div className="charts-grid">
-                        {/* 6-Month Adoption Trends */}
-                        <div className="chart-container glass-card">
-                            <h3 className="chart-title">
-                                <TrendingUp />
-                                6-Month Security Adoption Trends
-                            </h3>
-                            <LineChart width={500} height={300} data={CONFIG.adoptionTrends} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff" opacity={0.2} />
-                                <XAxis 
-                                    dataKey="month" 
-                                    axisLine={false} 
-                                    tickLine={false}
-                                    tick={{ fontSize: 12, fill: 'rgba(255,255,255,0.8)' }}
-                                />
-                                <YAxis 
-                                    axisLine={false} 
-                                    tickLine={false}
-                                    tick={{ fontSize: 12, fill: 'rgba(255,255,255,0.8)' }}
-                                    domain={[0, 100]}
-                                />
-                                <Tooltip 
-                                    contentStyle={{ 
-                                        backgroundColor: 'rgba(74, 20, 140, 0.9)', 
-                                        border: '1px solid rgba(255,255,255,0.2)',
-                                        borderRadius: '8px',
-                                        color: '#ffffff'
-                                    }} 
-                                />
-                                <Legend />
-                                <Line type="monotone" dataKey="slack2FA" stroke="#FF00FF" strokeWidth={3} name="Slack 2FA %" />
-                                <Line type="monotone" dataKey="email2FA" stroke="#00FFFF" strokeWidth={3} name="Email 2FA %" />
-                                <Line type="monotone" dataKey="bitwarden" stroke="#00FF94" strokeWidth={3} name="Bitwarden %" />
-                                <Line type="monotone" dataKey="training" stroke="#FFB74D" strokeWidth={3} name="Security Training %" />
-                            </LineChart>
-                        </div>
-
-                        {/* Risk Progression */}
-                        <div className="chart-container glass-card">
-                            <h3 className="chart-title">
-                                <AlertTriangle />
-                                Risk Progression Analysis
-                            </h3>
-                            <ComposedChart width={500} height={300} data={CONFIG.riskData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff" opacity={0.2} />
-                                <XAxis 
-                                    dataKey="month" 
-                                    axisLine={false} 
-                                    tickLine={false}
-                                    tick={{ fontSize: 12, fill: 'rgba(255,255,255,0.8)' }}
-                                />
-                                <YAxis 
-                                    yAxisId="risk"
-                                    orientation="left"
-                                    axisLine={false} 
-                                    tickLine={false}
-                                    tick={{ fontSize: 12, fill: 'rgba(255,255,255,0.8)' }}
-                                />
-                                <YAxis 
-                                    yAxisId="shares"
-                                    orientation="right"
-                                    axisLine={false} 
-                                    tickLine={false}
-                                    tick={{ fontSize: 12, fill: 'rgba(255,255,255,0.8)' }}
-                                />
-                                <Tooltip 
-                                    contentStyle={{ 
-                                        backgroundColor: 'rgba(74, 20, 140, 0.9)', 
-                                        border: '1px solid rgba(255,255,255,0.2)',
-                                        borderRadius: '8px',
-                                        color: '#ffffff'
-                                    }} 
-                                />
-                                <Legend />
-                                <Bar yAxisId="shares" dataKey="externalShares" fill="#FF4081" name="External Shares" opacity={0.7} />
-                                <Line yAxisId="risk" type="monotone" dataKey="risk" stroke="#FFB74D" strokeWidth={3} name="Risk Score %" />
-                            </ComposedChart>
-                        </div>
-                    </div>
-
-                    {/* 6-Month Detailed Analysis */}
-                    <div className="detailed-analysis glass-card">
-                        <h3 className="section-title">
-                            <BarChart3 />
-                            6-Month Detailed Metrics Comparison
-                        </h3>
-                        <div className="comparison-table">
-                            <div className="table-header">
-                                <div>Metric</div>
-                                <div>Jan 2024</div>
-                                <div>Feb 2024</div>
-                                <div>Jun 2024</div>
-                                <div>6-Mo Change</div>
-                                <div>Status</div>
-                            </div>
-                            {[
-                                {
-                                    metric: "Total Users",
-                                    jan: CONFIG.detailedMetrics.january.totalUsers,
-                                    feb: CONFIG.detailedMetrics.february.totalUsers,
-                                    jun: CONFIG.detailedMetrics.june.totalUsers,
-                                    change: "+20%",
-                                    status: "growing"
-                                },
-                                {
-                                    metric: "Slack 2FA Users",
-                                    jan: CONFIG.detailedMetrics.january.slack2FA,
-                                    feb: CONFIG.detailedMetrics.february.slack2FA,
-                                    jun: CONFIG.detailedMetrics.june.slack2FA,
-                                    change: "+74%",
-                                    status: "excellent"
-                                },
-                                {
-                                    metric: "Bitwarden Users",
-                                    jan: CONFIG.detailedMetrics.january.bitwardenUsers,
-                                    feb: CONFIG.detailedMetrics.february.bitwardenUsers,
-                                    jun: CONFIG.detailedMetrics.june.bitwardenUsers,
-                                    change: "+8%",
-                                    status: "good"
-                                },
-                                {
-                                    metric: "Security Training",
-                                    jan: CONFIG.detailedMetrics.january.securityTraining,
-                                    feb: CONFIG.detailedMetrics.february.securityTraining,
-                                    jun: CONFIG.detailedMetrics.june.securityTraining,
-                                    change: "+500%",
-                                    status: "concerning"
-                                },
-                                {
-                                    metric: "External Shares",
-                                    jan: CONFIG.detailedMetrics.january.externalShares,
-                                    feb: CONFIG.detailedMetrics.february.externalShares,
-                                    jun: CONFIG.detailedMetrics.june.externalShares,
-                                    change: "+229%",
-                                    status: "critical"
-                                },
-                                {
-                                    metric: "Unauthorized 2FA Exceptions",
-                                    jan: CONFIG.detailedMetrics.january.unauthorizedExceptions,
-                                    feb: CONFIG.detailedMetrics.february.unauthorizedExceptions,
-                                    jun: CONFIG.detailedMetrics.june.unauthorizedExceptions,
-                                    change: "-50%",
-                                    status: "improving"
-                                }
-                            ].map((row, index) => (
-                                <div key={index} className="table-row">
-                                    <div className="metric-name">{row.metric}</div>
-                                    <div>{row.jan.toLocaleString()}</div>
-                                    <div>{row.feb.toLocaleString()}</div>
-                                    <div>{row.jun.toLocaleString()}</div>
-                                    <div className={`change ${row.change.startsWith('+') ? 'positive' : 'negative'}`}>
-                                        {row.change}
-                                    </div>
-                                    <div className={`status ${row.status}`}>
-                                        {row.status === 'excellent' && '🎯'}
-                                        {row.status === 'good' && '✅'}
-                                        {row.status === 'growing' && '📈'}
-                                        {row.status === 'improving' && '⬆️'}
-                                        {row.status === 'concerning' && '⚠️'}
-                                        {row.status === 'critical' && '🚨'}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="footer">
-                        <div className="footer-text">
-                            Advanced Cybersecurity Analytics Platform
-                        </div>
-                        <div className="creator-credit">
-                            Created by Rahela
-                        </div>
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="charts-grid">
+                <div class="chart-container glass-card">
+                    <h3 class="chart-title">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                        6-Month Security Adoption Trends
+                    </h3>
+                    <div class="chart-placeholder">
+                        📈 Interactive Charts Loading...
+                        <br><small>Slack 2FA: 59% → 98% → 100% | Email 2FA: 98% → 98% → 99%</small>
                     </div>
                 </div>
-            );
-        }
 
-        ReactDOM.render(<CybersecurityDashboard />, document.getElementById('root'));
-    </script>
+                <div class="chart-container glass-card">
+                    <h3 class="chart-title">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        Risk Progression Analysis
+                    </h3>
+                    <div class="chart-placeholder">
+                        ⚠️ Risk Analysis Loading...
+                        <br><small>Risk Score: 71% → 73% → 153% | External Shares: 4K → 5K → 13K</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6-Month Detailed Analysis -->
+        <div class="detailed-analysis glass-card">
+            <h3 class="section-title">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                6-Month Detailed Metrics Comparison
+            </h3>
+            <div class="comparison-table">
+                <div class="table-header">
+                    <div>Metric</div>
+                    <div>Jan 2024</div>
+                    <div>Feb 2024</div>
+                    <div>Jun 2024</div>
+                    <div>6-Mo Change</div>
+                    <div>Status</div>
+                </div>
+                
+                <div class="table-row">
+                    <div class="metric-name">Total Users</div>
+                    <div>130</div>
+                    <div>138</div>
+                    <div>156</div>
+                    <div class="change positive">+20%</div>
+                    <div class="status growing">📈</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="metric-name">Slack 2FA Users</div>
+                    <div>77</div>
+                    <div>135</div>
+                    <div>134</div>
+                    <div class="change positive">+74%</div>
+                    <div class="status excellent">🎯</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="metric-name">Bitwarden Users</div>
+                    <div>101</div>
+                    <div>105</div>
+                    <div>109</div>
+                    <div class="change positive">+8%</div>
+                    <div class="status good">✅</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="metric-name">Security Training</div>
+                    <div>1</div>
+                    <div>15</div>
+                    <div>6</div>
+                    <div class="change positive">+500%</div>
+                    <div class="status concerning">⚠️</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="metric-name">External Shares</div>
+                    <div>4,039</div>
+                    <div>4,693</div>
+                    <div>13,282</div>
+                    <div class="change negative">+229%</div>
+                    <div class="status critical">🚨</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="metric-name">Unauthorized 2FA Exceptions</div>
+                    <div>2</div>
+                    <div>4</div>
+                    <div>1</div>
+                    <div class="change negative">-50%</div>
+                    <div class="status improving">⬆️</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Insights -->
+        <div class="key-insights">
+            <div class="insight-card glass-card">
+                <div class="insight-header">
+                    <svg class="icon" style="color: #00FF94;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h4 class="insight-title">Major Achievements</h4>
+                </div>
+                <ul class="insight-list">
+                    <li>Perfect Slack 2FA adoption achieved (100%)</li>
+                    <li>75% reduction in unauthorized 2FA exceptions</li>
+                    <li>Continuous Bitwarden growth (+5.25%)</li>
+                    <li>Zero security incidents maintained</li>
+                    <li>Strong authentication security foundation</li>
+                </ul>
+            </div>
+            
+            <div class="insight-card glass-card">
+                <div class="insight-header">
+                    <svg class="icon" style="color: #FF4081;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                    </svg>
+                    <h4 class="insight-title">Critical Concerns</h4>
+                </div>
+                <ul class="insight-list">
+                    <li>External sharing increased 183%</li>
+                    <li>Security training completion dropped 60%</li>
+                    <li>Risk score doubled (73% → 153%)</li>
+                    <li>Data exposure growing rapidly</li>
+                    <li>Immediate action required on file sharing</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-text">
+                Advanced Cybersecurity Analytics Platform
+            </div>
+            <div class="creator-credit">
+                Created by Rahela
+            </div>
+        </div>
+    </div>
 </body>
 </html>
