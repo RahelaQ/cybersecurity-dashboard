@@ -3,686 +3,625 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cybersecurity Dashboard - 6-Month Analysis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <title>Cybersecurity AI Metrics Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
+       
         body {
-            background: linear-gradient(135deg, #4A148C 0%, #7B1FA2 25%, #8E24AA 50%, #00BCD4 75%, #00E5FF 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #ffffff;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+    background: linear-gradient(135deg, #4A148C 0%, #7B1FA2 25%, #8E24AA 50%, #00BCD4 75%, #00E5FF 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #ffffff;
+    overflow-x: hidden;
+}
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-        .dashboard {
-            max-width: 1400px;
+.app-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 0, 255, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 255, 255, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(138, 43, 226, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(1deg); }
+}
+        }
+        
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
-            position: relative;
+            padding: 20px;
         }
-
-        .dashboard::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 0, 255, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 255, 255, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(138, 43, 226, 0.15) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(1deg); }
-        }
-
-        .glass-card {
-            background: rgba(74, 20, 140, 0.2);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1.5rem;
-            box-shadow: 
-                0 8px 32px rgba(74, 20, 140, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                0 0 20px rgba(0, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 
-                0 12px 40px rgba(74, 20, 140, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                0 0 30px rgba(0, 255, 255, 0.2);
-        }
-
-        .header {
+        
+        .hero {
             text-align: center;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .main-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #FF00FF 0%, #00FFFF 50%, #FFFFFF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
-            animation: titleGlow 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes titleGlow {
-            from { text-shadow: 0 0 30px rgba(255, 0, 255, 0.5); }
-            to { text-shadow: 0 0 50px rgba(0, 255, 255, 0.7); }
-        }
-
-        .subtitle {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 400;
-            margin-bottom: 2rem;
-        }
-
-        .period-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #7B1FA2 0%, #00BCD4 100%);
+            padding: 60px 0;
             color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 2rem;
-            font-weight: 600;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            box-shadow: 0 4px 20px rgba(123, 31, 162, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: rgba(255, 193, 7, 0.9);
+            color: #856404;
+            border-radius: 50px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: -50px auto 40px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+        
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
         }
-
+        
         .metric-card {
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid transparent;
         }
-
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #FF00FF 0%, #00FFFF 100%);
-            border-radius: 1.5rem 1.5rem 0 0;
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
         }
-
-        .metric-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
+        
+        .metric-card.success {
+            border-left-color: #10b981;
         }
-
-        .metric-title {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        
+        .metric-card.warning {
+            border-left-color: #f59e0b;
         }
-
+        
+        .metric-card.danger {
+            border-left-color: #ef4444;
+        }
+        
         .metric-value {
             font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #FF00FF 0%, #00FFFF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-
-        .metric-change {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-
-        .metric-change.positive {
-            color: #00FF94;
-        }
-
-        .metric-change.negative {
-            color: #FF4081;
-        }
-
-        .icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            opacity: 0.8;
-        }
-
-        .charts-section {
-            margin-bottom: 3rem;
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #FF00FF 0%, #00FFFF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            margin: 10px 0;
         }
-
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .chart-container {
-            padding: 2rem;
-        }
-
-        .chart-title {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #FF00FF 0%, #00FFFF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .chart-placeholder {
-            height: 300px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed rgba(255, 255, 255, 0.2);
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .detailed-analysis {
-            margin-top: 3rem;
-            padding: 2rem;
-        }
-
-        .comparison-table {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .table-header {
-            display: contents;
-            font-weight: 600;
-            color: #ffffff;
-            font-size: 0.875rem;
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: #6b7280;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
         }
-
-        .table-header > div {
-            padding: 0.75rem;
-            background: linear-gradient(135deg, rgba(123, 31, 162, 0.8) 0%, rgba(0, 188, 212, 0.8) 100%);
-            border-radius: 0.75rem;
+        
+        .metric-change {
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .metric-description {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        
+        .change-positive {
+            color: #10b981;
+        }
+        
+        .change-negative {
+            color: #ef4444;
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            margin: 30px 0;
+        }
+        
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #374151;
+        }
+        
+        .chart-description {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 20px;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .findings-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .findings-card {
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        
+        .achievements {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-left: 4px solid #10b981;
+        }
+        
+        .concerns {
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+            border-left: 4px solid #ef4444;
+        }
+        
+        .findings-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .findings-list {
+            list-style: none;
+            space-y: 10px;
+        }
+        
+        .findings-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .recommendations {
+            background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+        
+        .recommendations h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
-        .table-row {
-            display: contents;
+        
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
         }
-
-        .table-row > div {
-            padding: 0.75rem;
-            background: rgba(74, 20, 140, 0.3);
-            border-radius: 0.75rem;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.875rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        
+        .action-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
         }
-
-        .metric-name {
-            text-align: left !important;
-            font-weight: 500;
-            color: #ffffff !important;
+        
+        .priority-high {
+            border-left: 4px solid #ef4444;
         }
-
-        .change.positive {
-            color: #00FF94;
-            font-weight: 600;
+        
+        .priority-medium {
+            border-left: 4px solid #f59e0b;
         }
-
-        .change.negative {
-            color: #FF4081;
-            font-weight: 600;
+        
+        .priority-low {
+            border-left: 4px solid #10b981;
         }
-
-        .status {
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.25rem 0.5rem;
-        }
-
-        .status.excellent {
-            background: linear-gradient(135deg, #00FF94, #00E676);
-            color: #000;
-        }
-
-        .status.good {
-            background: linear-gradient(135deg, #00BCD4, #00E5FF);
-            color: #000;
-        }
-
-        .status.growing {
-            background: linear-gradient(135deg, #3F51B5, #5C6BC0);
-            color: white;
-        }
-
-        .status.improving {
-            background: linear-gradient(135deg, #9C27B0, #BA68C8);
-            color: white;
-        }
-
-        .status.concerning {
-            background: linear-gradient(135deg, #FF9800, #FFB74D);
-            color: #000;
-        }
-
-        .status.critical {
-            background: linear-gradient(135deg, #F44336, #FF4081);
-            color: white;
-        }
-
+        
         .footer {
             text-align: center;
-            margin-top: 4rem;
-            padding: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 0;
+            color: white;
+            opacity: 0.8;
         }
-
-        .footer-text {
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 0.5rem;
-        }
-
-        .creator-credit {
-            font-size: 1rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #FF00FF 0%, #00FFFF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .creator-credit:hover {
-            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
-            transform: translateY(-1px);
-        }
-
-        .key-insights {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .insight-card {
-            padding: 2rem;
-        }
-
-        .insight-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .insight-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #FF00FF 0%, #00FFFF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .insight-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .insight-list li {
-            padding: 0.75rem 0;
-            color: rgba(255, 255, 255, 0.9);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .insight-list li:before {
-            content: '▶';
-            position: absolute;
-            left: 0;
-            color: #00FFFF;
-            font-weight: bold;
-        }
-
-        .insight-list li:last-child {
-            border-bottom: none;
-        }
-
-        @media (max-width: 1024px) {
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .comparison-table {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-            
-            .table-header > div,
-            .table-row > div {
-                text-align: left;
-                padding: 0.5rem;
-            }
-
-            .key-insights {
-                grid-template-columns: 1fr;
-            }
-        }
-
+        
         @media (max-width: 768px) {
-            .dashboard {
-                padding: 1rem;
+            .hero h1 {
+                font-size: 2.5rem;
             }
             
-            .main-title {
-                font-size: 2.5rem;
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .content {
+                margin: -30px 20px 20px;
+                padding: 20px;
             }
             
             .metrics-grid {
                 grid-template-columns: 1fr;
             }
         }
+        
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <!-- Header -->
-        <div class="header">
-            <h1 class="main-title">CYBERSECURITY DASHBOARD</h1>
-            <p class="subtitle">Advanced Security Analytics & Threat Intelligence</p>
-            <div class="period-badge">January - June 2024 (6-Month Analysis)</div>
-        </div>
-
-        <!-- Key Metrics -->
-        <div class="metrics-grid">
-            <div class="metric-card glass-card">
-                <div class="metric-header">
-                    <span class="metric-title">Slack 2FA Adoption</span>
-                    <svg class="icon" style="color: #00FF94;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                    </svg>
-                </div>
-                <div class="metric-value">100%</div>
-                <div class="metric-change positive">
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
-                    </svg>
-                    +40.77% since Jan
-                </div>
-            </div>
-
-            <div class="metric-card glass-card">
-                <div class="metric-header">
-                    <span class="metric-title">External Shares</span>
-                    <svg class="icon" style="color: #FF4081;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                    </svg>
-                </div>
-                <div class="metric-value">13,282</div>
-                <div class="metric-change negative">
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
-                    </svg>
-                    +229% since Jan
-                </div>
-            </div>
-
-            <div class="metric-card glass-card">
-                <div class="metric-header">
-                    <span class="metric-title">Bitwarden Users</span>
-                    <svg class="icon" style="color: #00FF94;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                    </svg>
-                </div>
-                <div class="metric-value">109</div>
-                <div class="metric-change positive">
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
-                    </svg>
-                    +7.92% since Jan
-                </div>
-            </div>
-
-            <div class="metric-card glass-card">
-                <div class="metric-header">
-                    <span class="metric-title">Security Training</span>
-                    <svg class="icon" style="color: #FFB74D;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                    </svg>
-                </div>
-                <div class="metric-value">6</div>
-                <div class="metric-change negative">
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
-                    </svg>
-                    -40% since Feb
-                </div>
-            </div>
-        </div>
-
-        <!-- Charts Section -->
-        <div class="charts-section">
-            <div class="charts-grid">
-                <div class="chart-container glass-card">
-                    <h3 class="chart-title">
-                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                        </svg>
-                        6-Month Security Adoption Trends
-                    </h3>
-                    <div class="chart-placeholder">
-                        📈 Interactive Charts Loading...
-                        <br><small>Slack 2FA: 59% → 98% → 100% | Email 2FA: 98% → 98% → 99%</small>
-                    </div>
-                </div>
-
-                <div class="chart-container glass-card">
-                    <h3 class="chart-title">
-                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                        </svg>
-                        Risk Progression Analysis
-                    </h3>
-                    <div class="chart-placeholder">
-                        ⚠️ Risk Analysis Loading...
-                        <br><small>Risk Score: 71% → 73% → 153% | External Shares: 4K → 5K → 13K</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 6-Month Detailed Analysis -->
-        <div class="detailed-analysis glass-card">
-            <h3 class="section-title">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
-                6-Month Detailed Metrics Comparison
-            </h3>
-            <div class="comparison-table">
-                <div class="table-header">
-                    <div>Metric</div>
-                    <div>Jan 2024</div>
-                    <div>Feb 2024</div>
-                    <div>Jun 2024</div>
-                    <div>6-Mo Change</div>
-                    <div>Status</div>
-                </div>
-                
-                <div class="table-row">
-                    <div class="metric-name">Total Users</div>
-                    <div>130</div>
-                    <div>138</div>
-                    <div>156</div>
-                    <div class="change positive">+20%</div>
-                    <div class="status growing">📈</div>
-                </div>
-
-                <div class="table-row">
-                    <div class="metric-name">Slack 2FA Users</div>
-                    <div>77</div>
-                    <div>135</div>
-                    <div>134</div>
-                    <div class="change positive">+74%</div>
-                    <div class="status excellent">🎯</div>
-                </div>
-
-                <div class="table-row">
-                    <div class="metric-name">Bitwarden Users</div>
-                    <div>101</div>
-                    <div>105</div>
-                    <div>109</div>
-                    <div class="change positive">+8%</div>
-                    <div class="status good">✅</div>
-                </div>
-
-                <div class="table-row">
-                    <div class="metric-name">Security Training</div>
-                    <div>1</div>
-                    <div>15</div>
-                    <div>6</div>
-                    <div class="change positive">+500%</div>
-                    <div class="status concerning">⚠️</div>
-                </div>
-
-                <div class="table-row">
-                    <div class="metric-name">External Shares</div>
-                    <div>4,039</div>
-                    <div>4,693</div>
-                    <div>13,282</div>
-                    <div class="change negative">+229%</div>
-                    <div class="status critical">🚨</div>
-                </div>
-
-                <div class="table-row">
-                    <div class="metric-name">Unauthorized 2FA Exceptions</div>
-                    <div>2</div>
-                    <div>4</div>
-                    <div>1</div>
-                    <div class="change negative">-50%</div>
-                    <div class="status improving">⬆️</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Key Insights -->
-        <div class="key-insights">
-            <div class="insight-card glass-card">
-                <div class="insight-header">
-                    <svg class="icon" style="color: #00FF94;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <h4 class="insight-title">Major Achievements</h4>
-                </div>
-                <ul class="insight-list">
-                    <li>Perfect Slack 2FA adoption achieved (100%)</li>
-                    <li>75% reduction in unauthorized 2FA exceptions</li>
-                    <li>Continuous Bitwarden growth (+5.25%)</li>
-                    <li>Zero security incidents maintained</li>
-                    <li>Strong authentication security foundation</li>
-                </ul>
-            </div>
-            
-            <div class="insight-card glass-card">
-                <div class="insight-header">
-                    <svg class="icon" style="color: #FF4081;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                    </svg>
-                    <h4 class="insight-title">Critical Concerns</h4>
-                </div>
-                <ul class="insight-list">
-                    <li>External sharing increased 183%</li>
-                    <li>Security training completion dropped 60%</li>
-                    <li>Risk score doubled (73% → 153%)</li>
-                    <li>Data exposure growing rapidly</li>
-                    <li>Immediate action required on file sharing</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <div class="footer-text">
-                Advanced Cybersecurity Analytics Platform
-            </div>
-            <div class="creator-credit">
-                Created by Rahela
+    <div class="hero">
+        <div class="container">
+            <h1 data-aos="fade-down">🛡️ Cybersecurity Dashboard</h1>
+            <p data-aos="fade-up" data-aos-delay="200">February - June 2024 Security Assessment</p>
+            <div class="status-badge pulse" data-aos="zoom-in" data-aos-delay="400">
+                ⚠️ Status: NEEDS ATTENTION
             </div>
         </div>
     </div>
+
+    <div class="container">
+        <div class="content">
+            <!-- Key Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card success" data-aos="fade-up" data-aos-delay="100">
+                    <div class="metric-label">Slack 2FA Coverage</div>
+                    <div class="metric-value" style="color: #10b981;">100%</div>
+                    <div class="metric-change change-positive">↗️ +2.17% Perfect Score!</div>
+                    <div class="metric-description">All active Slack users now have two-factor authentication enabled, providing maximum account security.</div>
+                </div>
+                
+                <div class="metric-card danger" data-aos="fade-up" data-aos-delay="200">
+                    <div class="metric-label">External Shares</div>
+                    <div class="metric-value" style="color: #ef4444;">13,282</div>
+                    <div class="metric-change change-negative">↗️ +183% Critical Alert</div>
+                    <div class="metric-description">Files shared with external domains have nearly tripled, creating significant data exposure risks.</div>
+                </div>
+                
+                <div class="metric-card success" data-aos="fade-up" data-aos-delay="300">
+                    <div class="metric-label">Bitwarden Users</div>
+                    <div class="metric-value" style="color: #10b981;">109</div>
+                    <div class="metric-change change-positive">↗️ +3.8% Growing</div>
+                    <div class="metric-description">Password manager adoption continues to grow, with 81% of active users now using secure password storage.</div>
+                </div>
+                
+                <div class="metric-card danger" data-aos="fade-up" data-aos-delay="400">
+                    <div class="metric-label">Security Training</div>
+                    <div class="metric-value" style="color: #ef4444;">6</div>
+                    <div class="metric-change change-negative">↘️ -60% Major Decline</div>
+                    <div class="metric-description">Security awareness training completion has dropped dramatically, leaving most staff without current security knowledge.</div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="chart-container" data-aos="fade-up">
+                <h3 class="chart-title">📊 Security Adoption Trends</h3>
+                <div class="chart-description">
+                    <strong>Performance vs. Targets:</strong> This chart compares our current security adoption rates against industry best practices. Green bars show June 2024 achievements, while orange bars indicate our target goals.
+                </div>
+                <canvas id="adoptionChart" width="400" height="200"></canvas>
+            </div>
+
+            <div class="chart-container" data-aos="fade-up">
+                <h3 class="chart-title">🚨 File Sharing Risk Evolution</h3>
+                <div class="chart-description">
+                    <strong>Critical Trend Alert:</strong> This chart shows the dramatic increase in file sharing over 4 months. The red line represents external domain shares (⚠️ +183% increase), while the yellow line shows "anyone with link" shares (+36% increase).
+                </div>
+                <canvas id="sharingChart" width="400" height="200"></canvas>
+            </div>
+
+            <!-- Key Findings -->
+            <div class="findings-section">
+                <div class="findings-card achievements" data-aos="fade-right">
+                    <h3>🎯 Major Achievements</h3>
+                    <p style="font-size: 0.9rem; color: #059669; margin-bottom: 15px; font-style: italic;">
+                        These security wins demonstrate strong technical controls and improved authentication security across our organization.
+                    </p>
+                    <ul class="findings-list">
+                        <li><strong>Perfect Slack 2FA:</strong> 100% coverage achieved</li>
+                        <li><strong>2FA Exceptions Reduced:</strong> 75% decrease (4→1)</li>
+                        <li><strong>Email 2FA Improved:</strong> 97.67% → 99.31%</li>
+                        <li><strong>Zero Incidents:</strong> Perfect security record</li>
+                        <li><strong>Password Manager Growth:</strong> 81.34% adoption</li>
+                    </ul>
+                </div>
+                
+                <div class="findings-card concerns" data-aos="fade-left">
+                    <h3>⚠️ Critical Concerns</h3>
+                    <p style="font-size: 0.9rem; color: #dc2626; margin-bottom: 15px; font-style: italic;">
+                        These areas require immediate attention to prevent potential data breaches and maintain our security posture.
+                    </p>
+                    <ul class="findings-list">
+                        <li><strong>External Sharing Explosion:</strong> +183% increase</li>
+                        <li><strong>Share Risk Doubled:</strong> 73% → 153% risk ratio</li>
+                        <li><strong>Training Participation Collapsed:</strong> -60% completion</li>
+                        <li><strong>Data Exposure Risk:</strong> 13K+ external shares</li>
+                        <li><strong>Compliance Concerns:</strong> Potential regulation violations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="recommendations" data-aos="fade-up">
+                <h2>🎯 Action Plan</h2>
+                <p style="text-align: center; margin-bottom: 20px; opacity: 0.9;">
+                    Based on our analysis, here are prioritized recommendations to address critical security gaps while maintaining our current strengths.
+                </p>
+                <div class="action-grid">
+                    <div class="action-card priority-high">
+                        <h4>🚨 Critical Priority</h4>
+                        <p style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 10px;">Immediate action required (0-30 days)</p>
+                        <ul>
+                            <li>Emergency file sharing audit</li>
+                            <li>Deploy DLP controls immediately</li>
+                            <li>Review 13,282 external shares</li>
+                            <li>Implement sharing approval workflow</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="action-card priority-medium">
+                        <h4>📋 High Priority</h4>
+                        <p style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 10px;">Address within 1-3 months</p>
+                        <ul>
+                            <li>Mandatory security training revival</li>
+                            <li>Target 90% completion in 60 days</li>
+                            <li>Update training content and delivery</li>
+                            <li>Implement completion tracking</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="action-card priority-low">
+                        <h4>✅ Maintain Excellence</h4>
+                        <p style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 10px;">Ongoing monitoring and improvement</p>
+                        <ul>
+                            <li>Continue perfect 2FA coverage</li>
+                            <li>Maintain zero incident record</li>
+                            <li>Grow Bitwarden adoption to 85%</li>
+                            <li>Monitor authentication metrics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>🔒 Security Assessment Report • Generated March 2025 • Next Review: June 2025</p>
+        </div>
+    </div>
+
+    <script>
+        // Easy Update Configuration - Change these values for new reports
+        const CONFIG = {
+            reportPeriod: "February - June 2024",
+            overallStatus: "NEEDS ATTENTION",
+            
+            // Key metrics (change these for updates)
+            metrics: {
+                slack2FA: { value: "100%", change: "+2.17%", trend: "up" },
+                externalShares: { value: "13,282", change: "+183%", trend: "down" },
+                bitwardenUsers: { value: "109", change: "+3.8%", trend: "up" },
+                securityTraining: { value: "6", change: "-60%", trend: "down" }
+            },
+            
+            // Chart data (easy to update)
+            adoptionData: {
+                labels: ['Bitwarden', 'Slack 2FA', 'Email 2FA', 'Training'],
+                february: [76.09, 97.83, 97.67, 10.87],
+                june: [81.34, 100.0, 99.31, 4.48],
+                targets: [85, 100, 100, 90]
+            },
+            
+            sharingData: {
+                labels: ['Feb 2024', 'Mar 2024', 'Apr 2024', 'May 2024', 'Jun 2024'],
+                linkShares: [6399, 6800, 7300, 8000, 8675],
+                externalShares: [4693, 6200, 8500, 11000, 13282]
+            }
+        };
+
+        // Initialize AOS (Animate on Scroll)
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Chart 1: Security Adoption Rates
+        const adoptionCtx = document.getElementById('adoptionChart').getContext('2d');
+        new Chart(adoptionCtx, {
+            type: 'bar',
+            data: {
+                labels: CONFIG.adoptionData.labels,
+                datasets: [
+                    {
+                        label: 'February 2024',
+                        data: CONFIG.adoptionData.february,
+                        backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    },
+                    {
+                        label: 'June 2024',
+                        data: CONFIG.adoptionData.june,
+                        backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                        borderColor: 'rgb(16, 185, 129)',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    },
+                    {
+                        label: 'Target',
+                        data: CONFIG.adoptionData.targets,
+                        backgroundColor: 'rgba(245, 158, 11, 0.8)',
+                        borderColor: 'rgb(245, 158, 11)',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 2: File Sharing Trends
+        const sharingCtx = document.getElementById('sharingChart').getContext('2d');
+        new Chart(sharingCtx, {
+            type: 'line',
+            data: {
+                labels: CONFIG.sharingData.labels,
+                datasets: [
+                    {
+                        label: 'Anyone with Link Shares',
+                        data: CONFIG.sharingData.linkShares,
+                        borderColor: 'rgb(245, 158, 11)',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'External Domain Shares',
+                        data: CONFIG.sharingData.externalShares,
+                        borderColor: 'rgb(239, 68, 68)',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    }
+                }
+            }
+        });
+
+        // Add smooth scrolling for any anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
